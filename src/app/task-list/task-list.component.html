@@ -1,39 +1,114 @@
+<!-- Task List Component -->
 <div class="task-container">
+    <div class="task-header">
+        <h2>Task List</h2>
+        <span>Total Tasks: {{ tasks.length }}</span>
+    </div>
 
     <table class="task-table">
         <thead>
             <tr>
+                <th>Task</th>
                 <th>Assigned To</th>
                 <th>Status</th>
                 <th>Due Date</th>
                 <th>Priority</th>
-                <th>Comments</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let task of tasks">
+                <td>{{ task.title }}</td>
                 <td>{{ task.assignedTo }}</td>
                 <td>{{ task.status }}</td>
-                <td>{{ task.dueDate | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ task.dueDate | date }}</td>
                 <td>{{ task.priority }}</td>
-                <td>{{ task.comment }}</td>
                 <td>
-                    <div class="action-dropdown">
-                        <button class="dropdown-btn">...</button>
-                        <div class="dropdown-content">
-                            <button (click)="onEdit(task)">Edit</button>
-                            <button (click)="onDelete(task)">Delete</button>
-                        </div>
-                    </div>
+                    <button class="edit-btn" (click)="openEditModal(task)">Edit</button>
+                    <button class="delete-btn" (click)="onDelete(task)">Delete</button>
                 </td>
             </tr>
         </tbody>
     </table>
 
     <div class="pagination-controls">
-        <button (click)="prevPage()">« Prev</button>
-        <span>{{ currentPage }}</span>
-        <button (click)="nextPage()">Next »</button>
+        <button (click)="prevPage()">Previous</button>
+        <button (click)="nextPage()">Next</button>
+    </div>
+
+    <!-- Edit Task Modal -->
+   
+<div *ngIf="isEditModalOpen" class="modal-overlay">
+    <div class="modal-content">
+        <button class="close-modal" (click)="closeEditModal()">✖</button>
+        <h3>Edit Task</h3>
+        <form (ngSubmit)="saveTask()">
+            <div class="form-row">
+                <div class="form-group">
+                    <label>
+                        Assigned To <span class="required-symbol">*</span>
+                    </label>
+                    <input type="text" [(ngModel)]="taskToEdit.assignedTo" name="assignedTo" required />
+                </div>
+                <div class="form-group">
+                    <label>
+                        Status <span class="required-symbol">*</span>
+                    </label>
+                    <select [(ngModel)]="taskToEdit.status" name="status" required>
+                        <option value="pending">Pending</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>
+                        Due Date
+                    </label>
+                    <input type="date" [(ngModel)]="taskToEdit.dueDate" name="dueDate" />
+                </div>
+                <div class="form-group">
+                    <label>
+                        Priority <span class="required-symbol">*</span>
+                    </label>
+                    <select [(ngModel)]="taskToEdit.priority" name="priority" required>
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>
+                    Description
+                </label>
+                <textarea [(ngModel)]="taskToEdit.description" name="description" required></textarea>
+            </div>
+
+            <div class="button-group">
+                <button type="button" (click)="closeEditModal()">Cancel</button>
+                <button type="submit">Save Task</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+    <!-- Confirmation Modal -->
+    <div *ngIf="taskToDelete" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal" (click)="cancelDelete()">✖</button>
+        <div class="delete-confirmation-modal">
+            <h3>Delete</h3>
+    <p>Are you sure you want to delete task #{{ taskToDelete.id }}?</p>
+            <div class="button-group">
+                <button (click)="confirmDelete(taskToDelete)">Yes</button>
+                <button (click)="cancelDelete()">No</button>
+            </div>
+        </div>
+    </div>
     </div>
 </div>

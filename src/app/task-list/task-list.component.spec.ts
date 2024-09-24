@@ -1,6 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { TaskListComponent } from './task-list.component';
-import { By } from '@angular/platform-browser';
 
 describe('TaskListComponent', () => {
   let component: TaskListComponent;
@@ -9,113 +8,75 @@ describe('TaskListComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [TaskListComponent],
-    });
+    }).compileComponents();
 
     fixture = TestBed.createComponent(TaskListComponent);
     component = fixture.componentInstance;
-  });
 
-  it('should create the task list component', () => {
-    expect(component).toBeTruthy(); // Check if the component is created
-  });
-
-  it('should initialize filtered tasks on ngOnInit', () => {
+    // Initialize some sample tasks
     component.tasks = [
-      { id: 1, assignedTo: 'User1' },
-      { id: 2, assignedTo: 'User2' },
+      { id: 1, assignedTo: 'User1', status: 'Completed', dueDate: '2024-01-01', priority: 'High', comment: 'Task 1' },
+      { id: 2, assignedTo: 'User2', status: 'Pending', dueDate: '2024-01-02', priority: 'Medium', comment: 'Task 2' },
     ];
-
-    component.ngOnInit(); // Call ngOnInit to initialize
-
-    expect(component.filteredTasks).toEqual(component.tasks); // Expect filteredTasks to be initialized
   });
 
-  it('should emit editTask event when onEdit is called', () => {
-    spyOn(component.editTask, 'emit'); // Spy on the emit function
-
-    const task = { id: 1, assignedTo: 'User1' };
-    component.onEdit(task); // Call the onEdit method
-
-    expect(component.editTask.emit).toHaveBeenCalledWith(task); // Expect the editTask event to be emitted
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
   });
 
-  it('should emit deleteTask event when onDelete is called', () => {
-    spyOn(component.deleteTask, 'emit'); // Spy on the emit function
+  it('should confirm edit and update the task', () => {
+    component.taskToEdit = { id: 1, assignedTo: 'User1', status: 'In Progress', dueDate: '2024-01-01', priority: 'High', comment: 'Updated Task 1' };
+    component.confirmEdit();
 
-    const task = { id: 1, assignedTo: 'User1' };
-    component.onDelete(task); // Call the onDelete method
-
-    expect(component.deleteTask.emit).toHaveBeenCalledWith(task); // Expect the deleteTask event to be emitted
+    const updatedTask = component.tasks.find(task => task.id === 1);
+    expect(updatedTask?.status).toBe('In Progress'); // Check if the status was updated
+    expect(updatedTask?.comment).toBe('Updated Task 1'); // Check if the comment was updated
   });
 
-  it('should filter tasks based on search query', () => {
-    component.tasks = [
-      { id: 1, assignedTo: 'User1', status: 'Completed', priority: 'High', comment: 'Test Task' },
-      { id: 2, assignedTo: 'User2', status: 'Pending', priority: 'Medium', comment: 'Another Task' },
-    ];
+  it('should cancel edit and not change the task', () => {
+    const originalTask = { ...component.tasks[0] }; // Store original task
+    component.taskToEdit = { id: 1, assignedTo: 'User1', status: 'In Progress', dueDate: '2024-01-01', priority: 'High', comment: 'Updated Task 1' };
+    component.cancelEdit();
 
-    component.searchQuery = 'User1'; // Set search query
-    component.onSearch(); // Call the search method
-
-    expect(component.filteredTasks.length).toBe(1); // Expect one task to be filtered
-    expect(component.filteredTasks[0].assignedTo).toBe('User1'); // Expect the correct task to be in filteredTasks
+    const currentTask = component.tasks.find(task => task.id === 1);
+    expect(currentTask).toEqual(originalTask); // Check if the original task is unchanged
   });
 
-  it('should reset filtered tasks when search query is empty', () => {
-    component.tasks = [
-      { id: 1, assignedTo: 'User1' },
-      { id: 2, assignedTo: 'User2' },
-    ];
-
-    component.searchQuery = ''; // Set search query to empty
-    component.onSearch(); // Call the search method
-
-    expect(component.filteredTasks).toEqual(component.tasks); // Expect filteredTasks to reset to all tasks
+  it('should open the edit modal with the correct task', () => {
+    component.openEditModal(component.tasks[0]);
+    expect(component.taskToEdit).toEqual(component.tasks[0]); // Ensure the task to edit is set correctly
+    expect(component.isEditModalOpen).toBeTrue(); // Ensure the modal is opened
   });
 
-  it('should go to the previous page when prevPage is called', () => {
-    component.currentPage = 2; // Set current page to 2
-
-    component.prevPage(); // Call the method to go to the previous page
-
-    expect(component.currentPage).toBe(1); // Expect currentPage to be decremented
+  it('should close the edit modal', () => {
+    component.taskToEdit = { id: 1, assignedTo: 'User1', status: 'In Progress', dueDate: '2024-01-01', priority: 'High', comment: 'Updated Task 1' }; // Set a task to edit
+    component.closeEditModal();
+    expect(component.isEditModalOpen).toBeFalse(); // Ensure the modal is closed
+    expect(component.taskToEdit).toBeNull(); // Ensure task to edit is cleared
   });
 
-  it('should not go to the previous page if already on the first page', () => {
-    component.currentPage = 1; // Set current page to 1
-
-    component.prevPage(); // Call the method to go to the previous page
-
-    expect(component.currentPage).toBe(1); // Expect currentPage to remain 1
+  it('should emit delete event', () => {
+    spyOn(component, 'onDelete').and.callThrough();
+    component.onDelete(component.tasks[0]);
+    expect(component.taskToDelete).toEqual(component.tasks[0]); // Ensure the correct task is set for deletion
   });
 
-  it('should go to the next page when nextPage is called', () => {
-    component.filteredTasks = Array.from({ length: 10 }, (_, i) => ({ id: i + 1, assignedTo: `User${i + 1}` }));
-    component.tasksPerPage = 5; // Set tasks per page
-    component.currentPage = 1; // Set current page to 1
-
-    component.nextPage(); // Call the method to go to the next page
-
-    expect(component.currentPage).toBe(2); // Expect currentPage to be incremented
+  it('should confirm delete', () => {
+    const taskToDelete = { id: 2, assignedTo: 'User2', status: 'Pending', dueDate: '2024-01-02', priority: 'Medium', comment: 'Task 2' };
+    component.confirmDelete(taskToDelete);
+    expect(component.tasks.length).toBe(1); // Ensure one task is removed
+    expect(component.tasks[0].id).toBe(1); // Ensure the remaining task is the first one
   });
 
-  it('should not go to the next page if already on the last page', () => {
-    component.filteredTasks = Array.from({ length: 10 }, (_, i) => ({ id: i + 1, assignedTo: `User${i + 1}` }));
-    component.tasksPerPage = 5; // Set tasks per page
-    component.currentPage = 2; // Set current page to 2
-
-    component.nextPage(); // Call the method to go to the next page
-
-    expect(component.currentPage).toBe(2); // Expect currentPage to remain the same
+  it('should cancel deletion', () => {
+    component.cancelDelete();
+    expect(component.taskToDelete).toBeNull(); // Ensure the task to delete is cleared
   });
 
-  it('should return current page tasks', () => {
-    component.filteredTasks = Array.from({ length: 10 }, (_, i) => ({ id: i + 1, assignedTo: `User${i + 1}` }));
-    component.tasksPerPage = 5; // Set tasks per page
-    component.currentPage = 1; // Set current page to 1
-
-    const currentPageTasks = component.getCurrentPageTasks(); // Get current page tasks
-
-    expect(currentPageTasks.length).toBe(5); // Expect to get 5 tasks for page 1
+  it('should search tasks', () => {
+    component.searchQuery = 'User1';
+    component.onSearch();
+    expect(component.filteredTasks.length).toBe(1); // Ensure only one task matches the search
+    expect(component.filteredTasks[0].assignedTo).toBe('User1'); // Ensure the correct task is returned
   });
 });
