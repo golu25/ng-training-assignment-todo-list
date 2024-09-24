@@ -1,0 +1,39 @@
+<div class="task-container">
+
+    <table class="task-table">
+        <thead>
+            <tr>
+                <th>Assigned To</th>
+                <th>Status</th>
+                <th>Due Date</th>
+                <th>Priority</th>
+                <th>Comments</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let task of tasks">
+                <td>{{ task.assignedTo }}</td>
+                <td>{{ task.status }}</td>
+                <td>{{ task.dueDate | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ task.priority }}</td>
+                <td>{{ task.comment }}</td>
+                <td>
+                    <div class="action-dropdown">
+                        <button class="dropdown-btn">...</button>
+                        <div class="dropdown-content">
+                            <button (click)="onEdit(task)">Edit</button>
+                            <button (click)="onDelete(task)">Delete</button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination-controls">
+        <button (click)="prevPage()">« Prev</button>
+        <span>{{ currentPage }}</span>
+        <button (click)="nextPage()">Next »</button>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+<div class="task-form">
+    <!-- Close Button -->
+    <button class="close-btn" (click)="onClose()">&#x2715;</button>
+
+    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+        <h3>New Task</h3>
+
+        <!-- First Row: Assigned To and Status -->
+        <div class="form-row">
+            <div class="form-group">
+                <label>
+                    Assigned To <span class="required-symbol">*</span>
+                </label>
+                <input formControlName="assignedTo" required />
+            </div>
+            <div class="form-group">
+                <label>
+                    Status <span class="required-symbol">*</span>
+                </label>
+                <select formControlName="status">
+                    <option value="Completed">Completed</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="Not Started">Not Started</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Second Row: Due Date and Priority -->
+        <div class="form-row">
+            <div class="form-group">
+                <label>
+                    Due Date <span class="required-symbol"></span>
+                </label>
+                <input type="date" formControlName="dueDate" />
+            </div>
+            <div class="form-group">
+                <label>
+                    Priority <span class="required-symbol">*</span>
+                </label>
+                <select formControlName="priority">
+                    <option value="Low">Low</option>
+                    <option value="Normal">Normal</option>
+                    <option value="High">High</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Third Row: Description (Full width) -->
+        <div class="form-group">
+            <label>
+                Description
+            </label>
+            <textarea formControlName="comment"></textarea>
+        </div>
+
+        <!-- Submit and Cancel Buttons -->
+        <div class="button-group">
+            
+            <button type="button" (click)="onClose()">Cancel</button>
+            <button type="submit">Save Task</button>
+        </div>
+    </form>
+</div>

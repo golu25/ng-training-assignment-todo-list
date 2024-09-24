@@ -1,0 +1,183 @@
+/* Main container: Full-width with responsive margins */
+.task-container {
+    width: 100%; /* Full width of the viewport */
+    max-width: 1200px; /* Set a maximum width to prevent excessive stretching */
+    margin: 0 auto; /* Center the container */
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+/* Header section */
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.task-header h2 {
+    font-size: 24px;
+    color: #333;
+}
+
+.task-header span {
+    font-size: 14px;
+    color: #666;
+}
+
+/* Action buttons and search bar */
+.task-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.new-task-btn, .refresh-btn {
+    background-color: #ffd966;
+    border: none;
+    padding: 10px 20px;
+    font-size: 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.new-task-btn:hover, .refresh-btn:hover {
+    background-color: #ffeb99;
+}
+
+.search-input {
+    width: 200px;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Table styling */
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.task-table th, .task-table td {
+    text-align: left;
+    padding: 12px 10px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+    color: #333;
+}
+
+.task-table th {
+    background-color: #f9f9f9;
+    font-weight: bold;
+}
+
+.task-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Action buttons dropdown */
+.action-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-btn {
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    min-width: 80px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+}
+
+.dropdown-content button {
+    background-color: #ffd966;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    cursor: pointer;
+    text-align: left;
+}
+
+.dropdown-content button:hover {
+    background-color: #ffeb99;
+}
+
+.action-dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* Pagination controls */
+.pagination-controls {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+}
+
+.pagination-controls button {
+    background-color: transparent;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    color: #666;
+}
+
+.pagination-controls button:hover {
+    color: #333;
+}
+
+.pagination-controls span {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .task-container {
+        padding: 10px; /* Reduce padding on smaller screens */
+        width: 90%; /* Make the container slightly smaller on smaller screens */
+    }
+
+    .task-header h2 {
+        font-size: 20px;
+    }
+
+    .task-header span {
+        font-size: 12px;
+    }
+
+    .new-task-btn, .refresh-btn {
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+
+    .search-input {
+        width: 100%; /* Make search bar full-width on smaller screens */
+        margin-top: 10px;
+    }
+
+    .task-table th, .task-table td {
+        font-size: 12px;
+        padding: 8px;
+    }
+
+    .pagination-controls {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
