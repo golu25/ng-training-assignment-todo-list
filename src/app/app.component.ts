@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   filteredTasks: any[] = [];
   selectedTask: any = null;
   searchQuery: string = '';
+  menuOpen = false;
 
   constructor(private taskService: TaskService) {}
 
@@ -36,6 +37,9 @@ export class AppComponent implements OnInit {
         console.error('Error fetching tasks:', error); // Handle errors
       }
     );
+  }
+  toggleMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 
   onSearch(event: any) {

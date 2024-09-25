@@ -1,35 +1,57 @@
-/* task-form.component.css */
-
+/* Task form container */
 .task-form {
+    position: relative; /* Make the form a relative container for the close button */
     background-color: #fff;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border: 1px solid #ddd;
     border-radius: 4px;
-    margin: 20px;
+    margin: 90px;
+    margin-top: -40px;
 }
 
+/* Close button (X) */
+.close-btn {
+    position: absolute; /* Absolute positioning to place it in the top-right */
+    top: 10px;
+    right: 10px;
+    background-color: transparent; /* Transparent background */
+    border: none; /* No border */
+    font-size: 20px; /* Size of the X */
+    cursor: pointer; /* Pointer cursor */
+    color: #333; /* Color of the X button */
+}
+
+.close-btn:hover {
+    color: red; /* Change color on hover */
+}
+
+/* Label styling */
 .task-form label {
     display: block;
     margin-bottom: 8px;
     font-weight: bold;
 }
 
+/* Form row for layout */
 .task-form .form-row {
     display: flex; /* Use flexbox for the row layout */
     justify-content: space-between; /* Space items evenly */
     margin-bottom: 15px; /* Space between rows */
 }
 
+/* Form group styling */
 .task-form .form-group {
     flex: 1; /* Allow form groups to take equal space */
     margin-right: 10px; /* Space between form groups */
 }
 
+/* Remove margin for the last form group */
 .task-form .form-group:last-child {
-    margin-right: 0; /* Remove margin for the last item */
+    margin-right: 0;
 }
 
+/* Input, select, and textarea styling */
 .task-form input, 
 .task-form select, 
 .task-form textarea {
@@ -40,6 +62,7 @@
     font-size: 14px;
 }
 
+/* Button styling for submit and cancel */
 .task-form button[type="submit"], 
 .task-form button[type="button"] {
     background-color: #ffd966; /* Cancel button color */
@@ -50,11 +73,15 @@
     cursor: pointer;
 }
 
+/* Save button specific styling */
 .task-form button[type="submit"] {
     background-color: #ccc; /* Grey color for Save button */
 }
 
-.task-form button[type="submit"]:hover, 
+/* Hover effect for buttons */
+.task-form button[type="submit"]:hover{
+    background-color: #f1e9e9; 
+}
 .task-form button[type="button"]:hover {
     background-color: #ffeb99; /* Hover effect for both buttons */
 }

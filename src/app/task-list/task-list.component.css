@@ -1,8 +1,8 @@
 /* Main container: Full-width with responsive margins */
 .task-container {
-    width: 100%; /* Full width of the viewport */
-    max-width: 1200px; /* Set a maximum width to prevent excessive stretching */
-    margin: 0 auto; /* Center the container */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 20px;
     font-family: Arial, sans-serif;
     background-color: #fff;
@@ -16,7 +16,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .task-header h2 {
@@ -99,25 +99,142 @@
 /* Modal content */
 .modal-content {
     background-color: white;
-    padding: 20px; /* Increased padding for better appearance */
+    padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 400px; /* Set a width for the modal */
+    width: 400px;
+    position: relative;
     text-align: center;
-    position: relative; /* Needed for positioning the close button */
-    animation: fadeIn 0.3s ease; /* Optional: Add a fade-in effect */
+    animation: fadeIn 0.3s ease;
 }
 
 /* Close Modal Button */
 .close-modal {
-    position: absolute; /* Position it in the top right corner */
-    top: 15px; /* Space from the top */
-    right: 15px; /* Space from the right */
-    background: none; /* No background */
-    border: none; /* No border */
-    font-size: 20px; /* Larger font size */
-    color: #333; /* Color of the cross */
-    cursor: pointer; /* Pointer cursor on hover */
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    border: none;
+    color: black;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Delete Modal Specific Styles */
+.delete-confirmation-modal h4 {
+    background-color: red;
+    color: white;
+    padding: 10px;
+    margin-top: 5px;
+    text-align: center;
+    width: 380px;
+}
+
+/* Styling for form fields */
+.modal-content input,
+.modal-content select,
+.modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Form Row Styling */
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+/* Form Group Styling */
+.form-group {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.form-group:last-child {
+    margin-right: 0;
+}
+
+/* Modal buttons */
+.modal-content .button-group {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.modal-content button {
+    padding: 0px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.button_save {
+    background-color: #ffd966;; /* Gray Save button */
+    padding: 10px 20px; /* Increase padding */
+    
+    margin-left:10px; /* Increase font size */
+    border-radius: 6px;
+}
+
+.button_save:hover {
+    background-color:  #ffd966;
+    padding: 14px 30px; /* Keep the increased padding on hover */
+    font-size: 16px;
+     
+}
+
+.button_yes {
+    background-color: #ffd966;
+    padding: 10px 20px; /* Increase padding */
+    
+    margin-left:10px; /* Increase font size */
+    border-radius: 6px;
+}
+
+.button_yes:hover {
+    background-color:  #ffd966;
+    padding: 14px 30px; /* Keep the increased padding on hover */
+    font-size: 16px;
+}
+
+.button_cancel {
+    background-color: #ffd966; /* Yellow Cancel button */
+}
+
+.button_cancel:hover {
+    background-color: #ffeb99; /* Hover effect for Cancel button */
+}
+
+.button_no {
+    background-color: #e0e0e0; /* Gray No button */
+}
+
+.button_no:hover {
+    background-color: #c0c0c0; /* Hover effect for No button */
+}
+
+.cls_btn {
+    opacity: 0.5;
+}
+
+.close-btn {
+    position: absolute;
+    top: -15px;
+    right: 0px;
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #333;
+}
+
+.close-btn:hover {
+    color: red;
 }
 
 /* Animation for modal appearance */
@@ -130,67 +247,6 @@
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-/* Styling for form fields */
-.modal-content input,
-.modal-content select,
-.modal-content textarea {
-    width: 100%; /* Full width for input fields */
-    padding: 10px; /* Padding for better usability */
-    margin-top: 10px; /* Space above each field */
-    border: 1px solid #ddd;
-    border-radius: 4px;
-}
-
-/* Form Row Styling */
-.form-row {
-    display: flex; /* Use flexbox to align items in a row */
-    justify-content: space-between; /* Space items evenly */
-    margin-bottom: 15px; /* Space below each row */
-}
-
-/* Form Group Styling */
-.form-group {
-    flex: 1; /* Allow form groups to grow */
-    margin-right: 10px; /* Space between form groups */
-}
-
-.form-group:last-child {
-    margin-right: 0; /* Remove margin for the last item */
-}
-
-/* Modal buttons */
-.modal-content .button-group {
-    display: flex;
-    justify-content: flex-end; /* Align buttons to the right */
-    margin-top: 20px;
-}
-
-.modal-content button {
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    background-color: #ffd966; /* Same background color for buttons */
-    margin-left: 10px; /* Space between buttons */
-}
-
-.modal-content button:hover {
-    background-color: #ffeb99; /* Hover effect for buttons */
-}
-
-.modal-content button:last-child {
-    background-color: #e0e0e0; /* Cancel button color */
-}
-
-.modal-content button:last-child:hover {
-    background-color: #f0f0f0; /* Hover effect for Cancel button */
-}
-
-/* Delete Modal Specific Styles */
-.delete-confirmation-modal {
-    text-align: center;
 }
 
 /* Pagination controls */
@@ -221,8 +277,8 @@
 /* Responsive styles */
 @media (max-width: 768px) {
     .task-container {
-        padding: 10px; /* Reduce padding on smaller screens */
-        width: 90%; /* Make the container slightly smaller on smaller screens */
+        padding: 10px;
+        width: 90%;
     }
 
     .task-header h2 {
@@ -239,7 +295,7 @@
     }
 
     .search-input {
-        width: 100%; /* Make search bar full-width on smaller screens */
+        width: 100%;
         margin-top: 10px;
     }
 
@@ -253,8 +309,7 @@
         gap: 5px;
     }
 
-    /* Modal for small screens */
     .modal-content {
-        width: 90%; /* Full width on smaller screens */
+        width: 90%;
     }
 }

@@ -13,6 +13,7 @@
                 <th>Status</th>
                 <th>Due Date</th>
                 <th>Priority</th>
+                <th>Comments</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -23,92 +24,89 @@
                 <td>{{ task.status }}</td>
                 <td>{{ task.dueDate | date }}</td>
                 <td>{{ task.priority }}</td>
+                <td>{{ task.description }}</td>
                 <td>
-                    <button class="edit-btn" (click)="openEditModal(task)">Edit</button>
-                    <button class="delete-btn" (click)="onDelete(task)">Delete</button>
+                    <button class="edit-btn" (click)="openEditModal(task)" type="button">Edit Task</button>
+                    <button class="delete-btn" (click)="onDelete(task)" type="button">Delete Task</button>
                 </td>
             </tr>
         </tbody>
     </table>
 
     <div class="pagination-controls">
-        <button (click)="prevPage()">Previous</button>
-        <button (click)="nextPage()">Next</button>
+        <button (click)="prevPage()" type="button">Previous</button>
+        <button (click)="nextPage()" type="button">Next</button>
     </div>
 
     <!-- Edit Task Modal -->
-   
-<div *ngIf="isEditModalOpen" class="modal-overlay">
-    <div class="modal-content">
-        <button class="close-modal" (click)="closeEditModal()">✖</button>
-        <h3>Edit Task</h3>
-        <form (ngSubmit)="saveTask()">
-            <div class="form-row">
-                <div class="form-group">
-                    <label>
-                        Assigned To <span class="required-symbol">*</span>
-                    </label>
-                    <input type="text" [(ngModel)]="taskToEdit.assignedTo" name="assignedTo" required />
-                </div>
-                <div class="form-group">
-                    <label>
-                        Status <span class="required-symbol">*</span>
-                    </label>
-                    <select [(ngModel)]="taskToEdit.status" name="status" required>
-                        <option value="pending">Pending</option>
-                        <option value="in-progress">In Progress</option>
-                        <option value="completed">Completed</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-row">
-                <div class="form-group">
-                    <label>
-                        Due Date
-                    </label>
-                    <input type="date" [(ngModel)]="taskToEdit.dueDate" name="dueDate" />
-                </div>
-                <div class="form-group">
-                    <label>
-                        Priority <span class="required-symbol">*</span>
-                    </label>
-                    <select [(ngModel)]="taskToEdit.priority" name="priority" required>
-                        <option value="low">Low</option>
-                        <option value="medium">Medium</option>
-                        <option value="high">High</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <label>
-                    Description
-                </label>
-                <textarea [(ngModel)]="taskToEdit.description" name="description" required></textarea>
-            </div>
-
-            <div class="button-group">
-                <button type="button" (click)="closeEditModal()">Cancel</button>
-                <button type="submit">Save Task</button>
-            </div>
-        </form>
-    </div>
-</div>
-
-
-    <!-- Confirmation Modal -->
-    <div *ngIf="taskToDelete" class="modal-overlay">
+    <div *ngIf="isEditModalOpen" class="modal-overlay" role="dialog" aria-labelledby="edit-task-title">
         <div class="modal-content">
-            <button class="close-modal" (click)="cancelDelete()">✖</button>
-        <div class="delete-confirmation-modal">
-            <h3>Delete</h3>
-    <p>Are you sure you want to delete task #{{ taskToDelete.id }}?</p>
-            <div class="button-group">
-                <button (click)="confirmDelete(taskToDelete)">Yes</button>
-                <button (click)="cancelDelete()">No</button>
-            </div>
+            <button class="close-btn" (click)="closeEditModal()" aria-label="Close edit modal">&#x2715;</button>
+            
+            <h3 id="edit-task-title">Edit Task</h3>
+            <form (ngSubmit)="saveTask()">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="assignedTo">
+                            Assigned To <span class="required-symbol">*</span>
+                        </label>
+                        <input id="assignedTo" type="text" [(ngModel)]="taskToEdit.assignedTo" name="assignedTo" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="status">
+                            Status <span class="required-symbol">*</span>
+                        </label>
+                        <select id="status" [(ngModel)]="taskToEdit.status" name="status" required>
+                            <option value="pending">Pending</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="dueDate">Due Date</label>
+                        <input id="dueDate" type="date" [(ngModel)]="taskToEdit.dueDate" name="dueDate" />
+                    </div>
+                    <div class="form-group">
+                        <label for="priority">
+                            Priority <span class="required-symbol">*</span>
+                        </label>
+                        <select id="priority" [(ngModel)]="taskToEdit.priority" name="priority" required>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea id="description" [(ngModel)]="taskToEdit.description" name="description" required></textarea>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" (click)="closeEditModal()">Cancel</button>
+                    <button class="button_save" type="submit">Save Task</button>
+                </div>
+            </form>
         </div>
     </div>
+
+    <!-- Confirmation Modal -->
+    <div *ngIf="taskToDelete" class="modal-overlay" role="dialog" aria-labelledby="delete-task-title">
+        <div class="modal-content">
+            <button class="close-btn" (click)="cancelDelete()" aria-label="Close delete modal">&#x2715;</button>
+            
+            <div class="delete-confirmation-modal">
+                <h4 id="delete-task-title">Delete</h4>
+                <p>Are you sure you want to delete task #{{ taskToDelete.id }}?</p>
+                <div class="button-group">
+                    <button class="button_yes" (click)="confirmDelete(taskToDelete)" type="button">Yes</button>
+                    <button class="button_no" (click)="cancelDelete()" type="button">No</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

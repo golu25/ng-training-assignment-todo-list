@@ -1,39 +1,87 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ReactiveFormsModule } from '@angular/forms';
+import { TaskFormComponent } from './task-form.component';
 
-@Component({
-  selector: 'app-task-form',
-  standalone: true,
-  templateUrl: './task-form.component.html',
-  styleUrls: ['./task-form.component.css'],
-  imports: [ReactiveFormsModule],
-})
-export class TaskFormComponent {
-  @Input() task: any = null; 
-  @Output() saveTask = new EventEmitter<any>();
-  @Output() closeForm = new EventEmitter<void>();
+describe('TaskFormComponent', () => {
+  let component: TaskFormComponent;
+  let fixture: ComponentFixture<TaskFormComponent>;
 
-  taskForm = this.fb.group({
-    assignedTo: [''],
-    status: ['Completed'],
-    dueDate: [''],
-    priority: ['Low'],
-    comment: [''],
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ReactiveFormsModule, TaskFormComponent],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(TaskFormComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges(); // triggers ngOnInit and renders template
   });
 
-  statuses = ['Completed', 'In Progress', 'Not Started'];
-  priorities = ['Low', 'Normal', 'High'];
+  it('should create the component', () => {
+    expect(component).toBeTruthy();
+  });
 
-  constructor(private fb: FormBuilder) {}
+  it('should initialize form with default values', () => {
+    const taskForm = component.taskForm;
+    expect(taskForm).toBeTruthy();
+    expect(taskForm.get('assignedTo')?.value).toBe('');
+    expect(taskForm.get('status')?.value).toBe('Completed');
+    expect(taskForm.get('dueDate')?.value).toBe('');
+    expect(taskForm.get('priority')?.value).toBe('Low');
+    expect(taskForm.get('comment')?.value).toBe('');
+  });
 
-  onSubmit() {
-    if (this.taskForm.valid) {
-      this.saveTask.emit(this.taskForm.value);
-      this.closeForm.emit();
-    }
-  }
+  it('should emit saveTask with form values on submit', () => {
+    spyOn(component.saveTask, 'emit');
+    spyOn(component.closeForm, 'emit');
 
-  onClose() {
-    this.closeForm.emit();
-  }
-}
+    // Set form values
+    component.taskForm.setValue({
+      assignedTo: 'John Doe',
+      status: 'In Progress',
+      dueDate: '2023-09-30',
+      priority: 'High',
+      comment: 'Urgent task',
+    });
+
+    // Call onSubmit
+    component.onSubmit();
+
+    expect(component.saveTask.emit).toHaveBeenCalledWith({
+      assignedTo: 'John Doe',
+      status: 'In Progress',
+      dueDate: '2023-09-30',
+      priority: 'High',
+      comment: 'Urgent task',
+    });
+
+    expect(component.closeForm.emit).toHaveBeenCalled();
+  });
+
+  it('should not emit saveTask if form is invalid', () => {
+    spyOn(component.saveTask, 'emit');
+    spyOn(component.closeForm, 'emit');
+
+    // Set invalid form values
+    component.taskForm.setValue({
+      assignedTo: '', // Invalid: required field
+      status: 'In Progress',
+      dueDate: '2023-09-30',
+      priority: 'High',
+      comment: 'Urgent task',
+    });
+
+    // Call onSubmit
+    component.onSubmit();
+
+    expect(component.saveTask.emit).not.toHaveBeenCalled();
+    expect(component.closeForm.emit).not.toHaveBeenCalled();
+  });
+
+  it('should emit closeForm when onClose is called', () => {
+    spyOn(component.closeForm, 'emit');
+
+    component.onClose();
+
+    expect(component.closeForm.emit).toHaveBeenCalled();
+  });
+});

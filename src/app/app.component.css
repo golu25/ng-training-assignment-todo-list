@@ -7,9 +7,15 @@ nav {
     padding: 10px 20px;
     border-bottom: 2px solid #ddd;
     box-sizing: border-box;
+    position: relative;
 }
 
-/* Left side (placeholder for logo/title if needed) */
+.hamburger-icon {
+    cursor: pointer;
+    z-index: 1000; /* Ensure the hamburger icon is on top */
+}
+
+/* Left side (title and task info) */
 .nav-left {
     flex: 5;
 }
@@ -31,24 +37,23 @@ nav {
     color: #999;
 }
 
-
 /* Right side: Contains buttons and search input */
 .nav-right {
     display: flex;
     flex-direction: column;
-    align-items: flex-end; /* Align items to the right */
-    gap: 5px; /* Adds spacing between buttons and input */
+    align-items: flex-end;
+    gap: 5px;
 }
 
 /* Button container holding all buttons */
 .button-container {
     display: flex;
-    gap: 0px;
+    gap: 10px;
 }
 
 /* Button styling */
 nav button {
-    background-color: #ffd966; /* Light yellow */
+    background-color: #ffd966;
     border: none;
     padding: 10px 15px;
     cursor: pointer;
@@ -57,33 +62,51 @@ nav button {
 }
 
 nav button:hover {
-    background-color: #ffeb99; /* Lighter yellow on hover */
+    background-color: #ffeb99;
 }
 
 /* Search input styling */
 nav input {
-    padding: 8px 12px; /* Adjust padding to create space for the icon */
+    padding: 8px 12px;
     border: 1px solid #ccc;
     border-radius: 4px;
     width: 130px;
-    background-image: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"%3E%3Cpath fill="gray" d="M9.5 3C13.1 3 16 5.9 16 9.5c0 1.5-.5 3-1.3 4.2l.1.1 4.7 4.7-1.4 1.4-4.7-4.7-.1-.1c-1.2.8-2.7 1.3-4.2 1.3C5.9 16 3 13.1 3 9.5S5.9 3 9.5 3m0-2C4.8 1 1 4.8 1 9.5S4.8 18 9.5 18c2 0 3.9-.7 5.4-1.9l4.9 4.9c.2.2.5.3.7.3.3 0 .5-.1.7-.3.4-.4.4-1 0-1.4l-4.9-4.9C17.3 13.4 18 11.5 18 9.5 18 4.8 14.2 1 9.5 1z"%3E%3C/path%3E%3C/svg%3E');
-    background-size: 20px;
-    background-position: right 10px center; /* Move icon to the right */
-    background-repeat: no-repeat;
-    text-indent: 5px; /* Add space for text */
-    padding-right: 30px; /* Create space on the right for the icon */
 }
 
-/* Responsive Navbar */
+/* Full navigation menu */
+.nav-menu {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+/* Menu hidden by default on small screens */
+.nav-menu.open {
+    display: none;
+}
+
+/* Responsive styles */
 @media (max-width: 768px) {
-    nav {
+    .nav-menu {
+        display: none; /* Hide the menu by default on smaller screens */
+    }
+
+    .nav-menu.open {
+        display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: #f4f4f4;
+        width: 100%;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         padding: 10px;
     }
 
-    .nav-right {
-        align-items: flex-start; /* Align items to the left on smaller screens */
+    .nav-left, .nav-right {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
         width: 100%;
     }
 
@@ -93,17 +116,16 @@ nav input {
     }
 
     nav button {
-        width: 100%; /* Full width buttons on mobile */
+        width: 100%;
         text-align: center;
     }
 
     nav input {
-        width: 100%; /* Full width input on mobile */
+        width: 100%;
         margin-top: 10px;
     }
 }
 
-/* Mobile View (smaller than 480px) */
 @media (max-width: 480px) {
     nav {
         padding: 5px;

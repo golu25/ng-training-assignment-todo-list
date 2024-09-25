@@ -1,16 +1,24 @@
 <nav>
-  <div class="nav-left">
-    <h2>Tasks</h2>
-    <p>All Tasks</p>
-    <span>records</span>
-  </div>
-  
-  <div class="nav-right">
-    <div class="button-container">
-      <button (click)="onNewTask()">New Task</button>
-      <button (click)="loadTasks()">Refresh</button>
+  <!-- Hamburger Icon (Static on full size, functional on small screens) -->
+  <svg class="hamburger-icon" xmlns="http://www.w3.org/2000/svg" width="54" height="56" viewBox="0 0 24 24" (click)="toggleMenu()">
+    <path fill="#f01b07" d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"></path>
+  </svg>
+
+  <!-- The full nav menu -->
+  <div class="nav-menu" [ngClass]="{ 'open': menuOpen }">
+    <div class="nav-left">
+      <h2>Tasks</h2>
+      <p>All Tasks</p>
+      <span>records</span>
     </div>
-    <input (input)="onSearch($event)" placeholder="Search..." />
+
+    <div class="nav-right">
+      <div class="button-container">
+        <button (click)="onNewTask()">New Task</button>
+        <button (click)="loadTasks()">Refresh</button>
+      </div>
+      <input (input)="onSearch($event)" placeholder="Search..." />
+    </div>
   </div>
 </nav>
 
